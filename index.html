@@ -7,17 +7,7 @@
     <!-- Google Site Verification (placeholder) -->
     <meta name="google-site-verification" content="your-verification-code" />
 
-    <!-- ===== Google tag (gtag.js) - NEW TRACKING CODE ===== -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18496473934"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'AW-18496473934');
-    </script>
-
-    <!-- Call tracking function -->
+    <!-- Call tracking function (بدون أكواد تتبع) -->
     <script>
     function makePhoneCall(phoneNumber) {
       var cleanNumber = String(phoneNumber).replace(/[\s\-]/g, '');
@@ -29,22 +19,7 @@
         }
       }
       var telUrl = 'tel:' + cleanNumber;
-
-      if (typeof gtag === 'function') {
-        gtag('event', 'conversion', {
-            'send_to': 'AW-18496473934/gT9pCLrlq5IdEM6W5_NE',
-            'event_callback': function() {
-                window.location.href = telUrl;
-            },
-            'event_timeout': 1500
-        });
-        setTimeout(function() {
-            window.location.href = telUrl;
-        }, 800);
-      } else {
-        window.location.href = telUrl;
-      }
-
+      window.location.href = telUrl;
       return false;
     }
     </script>
@@ -1044,11 +1019,6 @@
     <script>
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            if (typeof gtag === 'function') {
-                gtag('event', 'conversion', {
-                    'send_to': 'AW-18496473934/gT9pCLrlq5IdEM6W5_NE'
-                });
-            }
             alert('شكراً لتواصلكم مع فني صحي الكويت! سيتم الاتصال بكم فوراً لتقديم عرض السعر.');
             this.reset();
         });
