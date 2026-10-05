@@ -7,33 +7,36 @@
     <!-- Google Site Verification (placeholder) -->
     <meta name="google-site-verification" content="your-verification-code" />
 
-    <!-- ===== Google tag (gtag.js) - NEW TRACKING CODE ===== -->
+    <!-- ===== Google tag (gtag.js) - TRACKING CODE ===== -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18496473934"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'AW-18496473934');
     </script>
 
     <!-- ===== Event snippet for نقرة صادرة إلى الخارج conversion page ===== -->
     <script>
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location = url;
+    function gtag_report_conversion(url, callback) {
+      var callbackFn = function () {
+        if (typeof(url) != 'undefined' && url) {
+          window.location.href = url;
+        }
+        if (typeof(callback) === 'function') {
+          callback();
         }
       };
       gtag('event', 'conversion', {
           'send_to': 'AW-18496473934/gT9pCLrlq5IdEM6W5_NE',
-          'event_callback': callback
+          'event_callback': callbackFn,
+          'event_timeout': 2000
       });
       return false;
     }
     </script>
 
-    <!-- Call tracking function -->
+    <!-- ===== Call tracking function (مصححة) ===== -->
     <script>
     function makePhoneCall(phoneNumber) {
       var cleanNumber = String(phoneNumber).replace(/[\s\-]/g, '');
@@ -46,13 +49,22 @@
       }
       var telUrl = 'tel:' + cleanNumber;
 
-      if (typeof gtag_report_conversion === 'function') {
-        gtag_report_conversion(telUrl);
-      }
-
-      setTimeout(function() {
+      // إطلاق حدث التحويل ثم فتح رابط الهاتف
+      if (typeof gtag === 'function') {
+        gtag('event', 'conversion', {
+            'send_to': 'AW-18496473934/gT9pCLrlq5IdEM6W5_NE',
+            'event_callback': function() {
+                window.location.href = telUrl;
+            },
+            'event_timeout': 1500
+        });
+        // احتياطي: فتح الرابط بعد 800ms حتى لو تأخر event_callback
+        setTimeout(function() {
+            window.location.href = telUrl;
+        }, 800);
+      } else {
         window.location.href = telUrl;
-      }, 150);
+      }
 
       return false;
     }
@@ -1053,8 +1065,10 @@
     <script>
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            if (typeof gtag_report_conversion === 'function') {
-                gtag_report_conversion();
+            if (typeof gtag === 'function') {
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-18496473934/gT9pCLrlq5IdEM6W5_NE'
+                });
             }
             alert('شكراً لتواصلكم مع فني صحي الكويت! سيتم الاتصال بكم فوراً لتقديم عرض السعر.');
             this.reset();
